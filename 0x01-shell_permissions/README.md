@@ -1,1 +1,1 @@
-script that sets no permission at all to the hello
+script that sets the mode of the file hello
