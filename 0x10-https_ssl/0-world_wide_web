@@ -1,16 +1,17 @@
 #!/usr/bin/env bash
-# Script that displays information about subdomains.
-domainInfo () {
-	info=$(dig "$2"."$1" | grep -A1 'ANSWER SECTION:' | tr '\t ' '\n' | tail -2 | tr '\n' ' ')
-	echo "$2 $info" | awk '{print "The subdomain " $1 " is a " $2 " record and points to " $3}'
-}
-
-if [ $# -eq 1 ]
-then
-	domainInfo "$1" "www"
-	domainInfo "$1" "lb-01"
-	domainInfo "$1" "web-01"
-	domainInfo "$1" "web-02"
-else
-	domainInfo "$1" "$2"
+# This script displays information about subdomains.
+domain="$1"
+subdomain="$2"
+if [ ! "$subdomain" ]; then
+subdomain=(www lb-01 web-01 web-02)
 fi
+display_domain_info()
+{
+for sb in "${subdomain[@]}"
+    do
+    if [ "$domain" ]; then
+    dig "$sb.$domain" | grep -A1 'ANSWER SECTION:' | awk -v subdomain="$sb" 'NR==2 {print "The subdomain " subdomain " is a " $4 " record and points to " $5}' 
+    fi
+done 
+}
+display_domain_info
