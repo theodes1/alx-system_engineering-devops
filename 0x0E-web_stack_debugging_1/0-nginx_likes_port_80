@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
-# Script to solve port listening
-sed -i 's/8080/80/g' /etc/nginx/sites-enabled/default
-service nginx restart
+# This script installs fixes the Nginx configuration file to listen on port 80
+sudo ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+sudo service nginx restart
